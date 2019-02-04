@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Login</title>
+	<script src="//ajax.googleapis.com/ajax/libs/jquery/1.8.2/jquery.min.js"></script>
+	<script src="https://apis.google.com/js/client:platform.js?onload=start"></script>
+</head>
+<body>
+
+
+	<div id="signInButton">
+		<span class="g-signin"
+			data-scope="openid email"
+			data-clientid="188677052571-r5v77jmh8r173mvb8f1murd2t0htco8i.apps.googleusercontent.com"
+			data-redirecturi="postmessage"
+			data-accesstype="offline"
+			data-cookiepolicy="single_host_origin"
+			data-callback="SignInCallbackFunction"
+			data-approvalprompt="force">
+		</span>
+	</div>
+	<div id="result"></div>
+
+
+	<script>
+		function SignInCallbackFunction(authObject){
+			console.log('We got a response from google and entered callback function.')
+			if (authObject.code) {
+				// If the authorization object contains the
+				// one-time-code then...
+				console.log('We successfully obtained a one-time-code.')
+				// Hide the button
+				$('#signInButton').attr('style','display:none');
+
+				// Send an ajax call to our server with the one-time-code
+				$.ajax({
+					type: 'POST',
+					url: '/gconnect?state={{STATE}}', // the little secret we made
+					processData: false, // tells jquery not to process the response into a string
+					contentType: 'application/octet-stream; charset=utf-8', //headers
+					data: authObject.code, //one time use code as data we want to send
+
+					// If we get a successful response, this callback function will handle the response
+					success: function(result) {
+						if (result.error) {
+							$('#result').html('There was an error when calling to the application server.')
+						} else {
+							console.log('We made a successful call back to our server, we now have access to users information.')
+							$('#result').html('Login successful! </br> ' + result + '</br> Redirecting...')
+							setTimeout(() => {
+								window.location.href = '/';
+							}, 3000)
+						}
+					}
+				});
+			} else if (authObject.error) {
+				console.log('There was an error from the authentication server: ' + authObject.error);	
+			} 
+		}
+	</script>
+
+</body>
+</html>

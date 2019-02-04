@@ -1,0 +1,38 @@
+<html>
+	<header>
+		<title>
+			My Awesome App
+		</title>
+	</header>
+
+	<body>
+		<h1>{{restaurant.name}}</h1>
+		{% with messages = get_flashed_messages() %}
+			{% if messages %}
+				{% for message in messages %}
+					<p>{{message}}</p>
+				{% endfor %}
+			{% endif %}
+		{% endwith %}	
+		<a href="{{url_for('NewMenuItem', restaurant_id=restaurant.id)}}"><h5>
+			Create New Menu Item
+		</h5></a>
+		{% for i in items %}
+
+		{{i.name}}
+		</br>
+		{{i.description}}
+		</br>
+		{{i.price}}
+		</br>
+		<a href="{{url_for('EditMenuItem', restaurant_id=restaurant.id, menu_id=i.id)}}">edit</a>
+		</br>
+		<a href='{{url_for("DeleteMenuItem", restaurant_id=restaurant.id,menu_id=i.id)}}'>delete</a>
+		</br></br>
+		
+		{% endfor %}
+
+		<a href='/'><p>Back to home page</p></a>
+
+	</body>
+</html>

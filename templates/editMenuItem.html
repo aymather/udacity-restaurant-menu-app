@@ -1,0 +1,15 @@
+<html>
+	<header>
+		<title>
+			Edit New Item
+		</title>
+	</header>
+	<body>
+		<h1>Edit Menu Item</h1>
+		<form method='POST' action="{{url_for('EditMenuItem', 
+		restaurant_id=restaurant,menu_id=menu_id)}}">
+			<input type='text' name='newname'>
+			<input type='submit' value='Submit'>
+		</form>
+	</body>
+</html>

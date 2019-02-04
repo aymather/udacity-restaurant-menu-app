@@ -1,0 +1,6 @@
+__pycache__
+*.pyc
+.vagrant
+client_secrets.json
+database_setup.*
+notes.txt
